@@ -27,10 +27,10 @@ presence_colors = [
 
 class Presence:
 	def __init__(self, client: Client, data: dict) -> None:
-		self.presence_type = PresenceType(data.get('userPresenceType'))
+		self.presence_type = PresenceType(data['userPresenceType'])
 		
-		self.last_online = parse(data.get('lastOnline', 0)).timestamp()
-		self.last_location = data.get('lastLocation')
+		self.last_online = parse(data['lastOnline']).timestamp()
+		self.last_location = data['lastLocation']
 		
 		self.job_id = data.get('gameId')
 		
@@ -38,11 +38,11 @@ class Presence:
 		universe = None
 		
 		if client.config.allow_partials:
-			universe = BaseUniverse(client, data.get('universeId'))
-			root_place = BasePlace(client, data.get('rootPlaceId'))
+			universe = BaseUniverse(client, data['universeId'])
+			root_place = BasePlace(client, data['rootPlaceId'])
 		else:
-			universe = client.get_Universe(data.get('universeId'))
-			root_place = client.get_Place(data.get('rootPlaceId'))
+			universe = client.get_Universe(data['universeId'])
+			root_place = client.get_Place(data['rootPlaceId'])
 		
 		self.root_place = root_place
 		self.universe = universe
