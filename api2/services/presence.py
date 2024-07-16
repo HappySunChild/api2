@@ -34,7 +34,7 @@ class Presence:
 		self.last_online = parse(data['lastOnline']).timestamp()
 		self.last_location = data['lastLocation']
 		
-		self.job_id = data.get('gameId')
+		self.job_id = data['gameId']
 		
 		root_place = None
 		universe = None
