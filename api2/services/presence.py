@@ -54,7 +54,7 @@ class Presence:
 		return presence_colors[self.presence_type.value]
 	
 	@property
-	def name(self):
+	def location_name(self):
 		return presence_names[self.presence_type.value]
 	
 	@property
