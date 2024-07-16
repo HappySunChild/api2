@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 from .utility.fetcher import Fetcher
 from .utility.url import URLGenerator
@@ -14,8 +14,14 @@ from .classes.universes import Universe, BaseUniverse
 from .classes.badges import Badge
 
 class ClientConfig:
-	def __init__(self, allow_partials: bool = True, debug_print_requests: bool = False):
+	def __init__(self,
+			allow_partials: bool = True,
+			do_caching: bool = True,
+			debug_print_requests: bool = False,
+		):
+		
 		self._debug_print_requests = debug_print_requests
+		self.do_caching = do_caching
 		self.allow_partials = allow_partials
 
 class Client:
@@ -24,6 +30,13 @@ class Client:
 			config = ClientConfig()
 		
 		self.config = config
+		self.cached = {
+			'users': {},
+			'places': {},
+			'universes': {},
+			
+			'universe_ids': {}
+		}
 		
 		self.fetcher = Fetcher(self)
 		self.url_generator = URLGenerator(base_url)
@@ -35,23 +48,68 @@ class Client:
 		if token:
 			self.set_token(token)
 	
+	def get_cache(self, cache_name: str, index: str):
+		if not self.config.do_caching:
+			return
+		
+		sub_cache = self.cached.get(cache_name)
+		
+		if sub_cache is None:
+			print(f'missing subcache {cache_name}')
+			
+			return
+		
+		return sub_cache.get(index)
+	
+	def set_cache(self, cache_name: str, index: str, new_value: Any):
+		if not self.config.do_caching:
+			return
+		
+		sub_cache = self.cached.get(cache_name)
+		
+		if sub_cache is None:
+			print(f'missing subcache {cache_name}')
+			
+			return
+		
+		sub_cache[index] = new_value
+	
+	
 	def _get_universe_id(self, place_id: int):
+		cached_id = self.get_cache('universe_ids', place_id)
+		
+		if cached_id:
+			return cached_id
+		
 		universe_data, _ = self.fetcher.get(
 			url=self.url_generator.get_url('apis', f'universes/v1/places/{place_id}/universe')
 		)
 		
-		return universe_data.get('universeId')
+		universe_id = universe_data.get('universeId')
+		
+		self.set_cache('universe_ids', place_id, universe_id)
+		
+		return universe_id
 	
 	def set_token(self, token: str):
 		self.fetcher.set_cookie('.ROBLOSECURITY', token)
 	
 	
 	def get_User(self, user_id: int):
+		cached_user = self.get_cache('users', user_id)
+		
+		if cached_user:
+			return cached_user
+		
 		user_data, _ = self.fetcher.get(
 			url=self.url_generator.get_url('users', f'v1/users/{user_id}')
 		)
 		
-		return User(self, user_data)
+		user = User(self, user_data)
+		
+		self.set_cache('users', user_id, user)
+		
+		return user
 	
 	def get_base_User(self, user_id: int):
 		return BaseUser(self, user_id)
@@ -85,7 +143,16 @@ class Client:
 		if place_id and not universe_id:
 			universe_id = self._get_universe_id(place_id)
 		
-		return self.multiget_Universes([universe_id])[0]
+		cached_universe = self.get_cache('universes', universe_id)
+		
+		if cached_universe:
+			return cached_universe
+		
+		universe = self.multiget_Universes([universe_id])[0]
+		
+		self.set_cache('universes', universe_id, universe)
+		
+		return universe
 	
 	def get_base_Universe(self, universe_id: int):
 		return BaseUniverse(universe_id)
@@ -105,7 +172,16 @@ class Client:
 	
 	
 	def get_Place(self, place_id: int):
-		return self.multiget_Places([place_id])[0]
+		cached_place = self.get_cache('places', place_id)
+		
+		if cached_place:
+			return cached_place
+		
+		place = self.multiget_Places([place_id])[0]
+		
+		self.set_cache('places', place_id, place)
+		
+		return place
 	
 	def get_base_Place(self, place_id: int):
 		return BasePlace(self, place_id)
