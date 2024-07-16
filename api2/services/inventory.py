@@ -1,3 +1,5 @@
+# https://inventory.roblox.com/docs/index.html
+
 from __future__ import annotations
 from typing import TYPE_CHECKING, Callable, Optional
 
