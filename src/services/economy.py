@@ -11,11 +11,11 @@ class EconomyProvider:
 	def get_user_has_premium(self, user_id: int):
 		client = self.client
 		
-		_, premium_response = client.fetcher.get(
-			url=client.url_generator.get_url('premiumfeatures', f'v1/users/{user_id}/validate_membership')
+		has_premium, _ = client.fetcher.get(
+			url=client.url_generator.get_url('premiumfeatures', f'v1/users/{user_id}/validate-membership')
 		)
 		
-		return premium_response.text == 'true'
+		return has_premium
 	
 	def get_user_currency(self, user_id: int):
 		client = self.client

@@ -121,12 +121,7 @@ class BaseUser(BaseData):
 	
 	@property
 	def has_premium(self):
-		if self._has_premium:
-			return self._has_premium
-		
 		has_premium = self.client.economy.get_user_has_premium(self.id)
-		
-		self._has_premium = has_premium
 		
 		return has_premium
 	
