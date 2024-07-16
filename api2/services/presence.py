@@ -9,6 +9,22 @@ from ..enums import PresenceType
 if TYPE_CHECKING:
 	from ..client import Client
 
+presence_names = [
+	'Offline',
+	'Online',
+	'In Game',
+	'Studio',
+	'Invisible'
+]
+
+presence_colors = [
+	0x3B3B3B,
+	0x5883F2,
+	0x52DE4B,
+	0xDDAE4A,
+	0xE04646
+]
+
 class Presence:
 	def __init__(self, client: Client, data: dict) -> None:
 		self.presence_type = PresenceType(data.get('userPresenceType'))
@@ -30,6 +46,14 @@ class Presence:
 		
 		self.root_place = root_place
 		self.universe = universe
+	
+	@property
+	def color(self):
+		return presence_colors[self.presence_type.value]
+	
+	@property
+	def name(self):
+		return presence_names[self.presence_type.value]
 	
 	@property
 	def game_link(self):
