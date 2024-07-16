@@ -1,3 +1,5 @@
+from typing import Union
+
 from .classes.badges import Badge, BaseBadge
 from .classes.places import Place, BasePlace
 from .classes.groups import Group, BaseGroup, GroupMember
@@ -12,3 +14,5 @@ from .services.inventory import InventoryProvider, Asset
 from .services.presence import PresenceProvider, Presence
 
 from .client import Client, ClientConfig
+
+UserOrUserId = Union[BaseUser, int]

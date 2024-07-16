@@ -4,14 +4,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from dateutil.parser import parse
+from ..classes.users import BaseUser
 from ..classes.universes import BaseUniverse
 from ..classes.places import BasePlace
 from ..enums import PresenceType
 
 if TYPE_CHECKING:
+	from ..types import UserOrUserId
 	from ..client import Client
 
-presence_names = [
+PRESENCE_NAMES = [
 	'Offline',
 	'Online',
 	'In Game',
@@ -19,7 +21,7 @@ presence_names = [
 	'Invisible'
 ]
 
-presence_colors = [
+PRESENCE_COLORS = [
 	0x3B3B3B,
 	0x5883F2,
 	0x52DE4B,
@@ -36,26 +38,30 @@ class Presence:
 		
 		self.job_id = data['gameId']
 		
+		user = None
 		root_place = None
 		universe = None
 		
 		if client.config.allow_partials:
+			user = BaseUser(client, data['userId'])
 			universe = BaseUniverse(client, data['universeId'])
 			root_place = BasePlace(client, data['rootPlaceId'])
 		else:
+			user = client.get_User(data['userId'])
 			universe = client.get_Universe(data['universeId'])
 			root_place = client.get_Place(data['rootPlaceId'])
 		
 		self.root_place = root_place
 		self.universe = universe
+		self.user = user
 	
 	@property
 	def color(self):
-		return presence_colors[self.presence_type.value]
+		return PRESENCE_COLORS[self.presence_type.value]
 	
 	@property
 	def location_name(self):
-		return presence_names[self.presence_type.value]
+		return PRESENCE_NAMES[self.presence_type.value]
 	
 	@property
 	def game_link(self):
@@ -72,13 +78,13 @@ class PresenceProvider:
 	def __init__(self, client: Client) -> None:
 		self.client = client
 	
-	def get_user_presences(self, users: list):
+	def get_user_presences(self, users: list[UserOrUserId]) -> list[Presence]:
 		client = self.client
 		
 		presence_data, _ = client.fetcher.post(
 			url=client.url_generator.get_url('presence', 'v1/presence/users'),
 			json={
-				"userIds": users
+				"userIds": list(map(int, users))
 			}
 		)
 		
