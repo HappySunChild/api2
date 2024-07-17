@@ -16,7 +16,7 @@ from .classes.universes import Universe, BaseUniverse
 from .classes.badges import Badge
 
 if TYPE_CHECKING:
-	from .types import UserOrId
+	from .types import UserOrId, PlaceOrId, UniverseOrId
 
 class ClientConfig:
 	def __init__(self,
@@ -150,9 +150,11 @@ class Client:
 		return BaseGroup(self, group_id)
 	
 	
-	def get_Universe(self, universe_id: int=None, place_id: int=None):
-		if place_id and not universe_id:
-			universe_id = self._get_universe_id(place_id)
+	def get_Universe(self, universe: UniverseOrId=None, place: PlaceOrId=None):
+		universe_id = int(universe)
+		
+		if place and not universe_id:
+			universe_id = self._get_universe_id(int(place))
 		
 		cached_universe = self.get_cache('universes', universe_id)
 		
@@ -182,7 +184,12 @@ class Client:
 		return self.multiget_Universes([place.universe_id for place in places])
 	
 	
-	def get_Place(self, place_id: int):
+	def get_Place(self, place: PlaceOrId):
+		if isinstance(place, Place):
+			return place
+		
+		place_id = int(place)
+		
 		cached_place = self.get_cache('places', place_id)
 		
 		if cached_place:
