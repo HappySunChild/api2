@@ -10,7 +10,7 @@ from ..classes.places import BasePlace
 from ..enums import PresenceType
 
 if TYPE_CHECKING:
-	from ..types import UserOrUserId
+	from ..types import UserOrId
 	from ..client import Client
 
 PRESENCE_NAMES = [
@@ -78,7 +78,7 @@ class PresenceProvider:
 	def __init__(self, client: Client) -> None:
 		self.client = client
 	
-	def get_user_presences(self, users: list[UserOrUserId]) -> list[Presence]:
+	def get_user_presences(self, users: list[UserOrId]) -> list[Presence]:
 		client = self.client
 		
 		presence_data, _ = client.fetcher.post(

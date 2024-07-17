@@ -20,6 +20,9 @@ class BaseBadge(BaseData):
 		self.client = client
 		self.id = badge_id
 	
+	def get_icon(self, is_circular: bool = False):
+		return self.client.thumbnails.get_badge_icons([self.id], is_circular=is_circular)
+	
 	@property
 	def link(self):
 		return f'https://www.roblox.com/badges/{self.id}/badge'

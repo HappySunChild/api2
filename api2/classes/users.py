@@ -5,7 +5,7 @@ from dateutil.parser import parse
 
 from .base import BaseData
 from .badges import Badge
-from ..enums import AssetType
+from ..enums import AssetType, UserThumbnailSize, UserThumbnailType
 from ..utility.fetcher import PageIterator, SortOrder
 
 if TYPE_CHECKING:
@@ -114,6 +114,9 @@ class BaseUser(BaseData):
 	
 	def get_currency(self):
 		return self.client.economy.get_user_currency(self.id)
+	
+	def get_thumbnail(self, type: UserThumbnailType = UserThumbnailType.Bust, size: UserThumbnailSize = UserThumbnailSize.Medium, is_circular: bool = False):
+		return self.client.thumbnails.get_user_thumbnails([self.id], type=type, size=size, is_circular=is_circular)[0]
 	
 	@property
 	def can_view_inventory(self):

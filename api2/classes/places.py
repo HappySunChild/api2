@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from .base import BaseData
 from ..utility.fetcher import PageIterator
+from ..enums import PlaceThumbnailSize
 
 if TYPE_CHECKING:
 	from ..client import Client
@@ -34,6 +35,9 @@ class BasePlace(BaseData):
 			page_size=page_size,
 			handler=lambda data: GameInstance(data)
 		)
+	
+	def get_icon(self, size: PlaceThumbnailSize = PlaceThumbnailSize.Medium, is_circular: bool = False):
+		return self.client.thumbnails.get_places_icons([self.id], size=size, is_circular=is_circular)[0]
 	
 	@property
 	def link(self):

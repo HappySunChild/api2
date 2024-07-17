@@ -144,21 +144,21 @@ class Fetcher:
 	def set_cookie(self, name: str, value: Any):
 		self.session.cookies[name] = value
 	
-	def request(self, method: str, url: str, *args, **kwargs) -> tuple[dict, Response]:
+	def request(self, method: str, url: str, params: dict = None, *args, **kwargs) -> tuple[dict, Response]:
 		if self.client.config._debug_print_requests:
 			print(f'{method} request: {url}')
 		
-		response = self.session.request(method, url, *args, **kwargs)
+		response = self.session.request(method=method, url=url, params=params, *args, **kwargs)
 		
 		if response.status_code == 403 and self.xcsrf_token_name in response.headers:
 			self.set_header(self.xcsrf_token_name, response.headers.get(self.xcsrf_token_name))
 			
-			response = self.session.request(method, url, *args, **kwargs)
+			response = self.session.request(method=method, url=url, params=params, *args, **kwargs)
 		
 		return response.json(), response
 	
-	def get(self, url: str, *args, **kwargs) -> tuple[dict, Response]:
-		return self.request("GET", url, *args, **kwargs)
+	def get(self, url: str, params: dict = None, *args, **kwargs) -> tuple[dict, Response]:
+		return self.request(method="GET", url=url, params=params, *args, **kwargs)
 	
-	def post(self, url: str, *args, **kwargs) -> tuple[dict, Response]:
-		return self.request("POST", url, *args, **kwargs)
+	def post(self, url: str, json: dict = None, *args, **kwargs) -> tuple[dict, Response]:
+		return self.request(method="POST", url=url, json=json *args, **kwargs)

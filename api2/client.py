@@ -6,6 +6,7 @@ from .utility.url import URLGenerator
 from .services.presence import PresenceProvider
 from .services.economy import EconomyProvider
 from .services.inventory import InventoryProvider
+from .services.thumbnail import ThumbnailProvider
 
 from .classes.groups import Group, BaseGroup
 from .classes.users import User, BaseUser, AuthenticatedUser
@@ -44,6 +45,7 @@ class Client:
 		self.economy = EconomyProvider(self)
 		self.presence = PresenceProvider(self)
 		self.inventory = InventoryProvider(self)
+		self.thumbnails = ThumbnailProvider(self)
 		
 		if token:
 			self.set_token(token)

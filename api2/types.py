@@ -12,7 +12,11 @@ from .utility.url import URLGenerator
 from .services.economy import EconomyProvider
 from .services.inventory import InventoryProvider, Asset
 from .services.presence import PresenceProvider, Presence
+from .services.thumbnail import ThumbnailProvider, Thumbnail, UniverseThumbnails
 
 from .client import Client, ClientConfig
 
-UserOrUserId = Union[BaseUser, int]
+UserOrId = Union[BaseUser, int]
+PlaceOrId = Union[BasePlace, int]
+UniverseOrId = Union[Universe, int]
+BadgeOrId = Union[Badge, int]
