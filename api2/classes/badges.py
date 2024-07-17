@@ -21,7 +21,7 @@ class BaseBadge(BaseData):
 		self.id = badge_id
 	
 	def get_icon(self, is_circular: bool = False):
-		return self.client.thumbnails.get_badge_icons([self.id], is_circular=is_circular)
+		return self.client.thumbnails.get_badge_icons([self.id], is_circular=is_circular)[0]
 	
 	@property
 	def link(self):
