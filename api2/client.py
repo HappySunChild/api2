@@ -1,4 +1,4 @@
-from typing import Optional, Any
+from typing import TYPE_CHECKING , Optional, Any
 
 from .utility.fetcher import Fetcher
 from .utility.url import URLGenerator
@@ -13,6 +13,9 @@ from .classes.users import User, BaseUser, AuthenticatedUser
 from .classes.places import Place, BasePlace
 from .classes.universes import Universe, BaseUniverse
 from .classes.badges import Badge
+
+if TYPE_CHECKING:
+	from .types import UserOrId
 
 class ClientConfig:
 	def __init__(self,
@@ -97,7 +100,12 @@ class Client:
 		self.fetcher.set_cookie('.ROBLOSECURITY', token)
 	
 	
-	def get_User(self, user_id: int):
+	def get_User(self, user: UserOrId):
+		if isinstance(user, User):
+			return user
+		
+		user_id = int(user)
+		
 		cached_user = self.get_cache('users', user_id)
 		
 		if cached_user:
