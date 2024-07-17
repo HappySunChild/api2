@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING , Optional, Any
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 
 from .utility.fetcher import Fetcher
 from .utility.url import URLGenerator
