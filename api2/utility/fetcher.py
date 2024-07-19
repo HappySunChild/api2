@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Optional, Callable, Any
 
 from ..enums import SortOrder
 from requests import Session, Response
+from time import sleep
 
 if TYPE_CHECKING:
 	from ..client import Client
@@ -145,10 +146,21 @@ class Fetcher:
 		self.session.cookies[name] = value
 	
 	def request(self, method: str, url: str, params: dict = None, *args, **kwargs) -> tuple[dict, Response]:
-		if self.client.config._debug_print_requests:
-			print(f'{method} request: {url}')
-		
+		config = self.client.config
 		response = self.session.request(method=method, url=url, params=params, *args, **kwargs)
+		
+		if config._debug_print_requests:
+			print(f'{method} request: {url} ({response.status_code})')
+		
+		if response.status_code == 429: # too many requests
+			print('too many requests!')
+			
+			if config.retry_timer > 0:
+				print('retrying request')
+				
+				sleep(config.retry_timer)
+				
+				return self.request(method=method, url=url, params=params, *args, **kwargs)
 		
 		if response.status_code == 403 and self.xcsrf_token_name in response.headers:
 			self.set_header(self.xcsrf_token_name, response.headers.get(self.xcsrf_token_name))

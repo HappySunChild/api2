@@ -23,11 +23,13 @@ class ClientConfig:
 			allow_partials: bool = True,
 			do_caching: bool = True,
 			debug_print_requests: bool = False,
+			retry_timer: float = 60
 		):
 		
 		self._debug_print_requests = debug_print_requests
 		self.do_caching = do_caching
 		self.allow_partials = allow_partials
+		self.retry_timer = retry_timer
 
 class Client:
 	def __init__(self, token: str = None, config: Optional[ClientConfig] = None , base_url = 'roblox.com'):

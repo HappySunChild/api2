@@ -1,3 +1,6 @@
+# https://friends.roblox.com/docs/index.html
+# https://users.roblox.com/docs/index.html
+
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
@@ -53,14 +56,23 @@ class BaseUser(BaseData):
 		except IndexError:
 			return None
 	
-	def get_friends(self):
+	def get_friends(self) -> list[Friend]:
 		client = self.client
 		
-		friends_data, _ = client.fetcher.get(
+		friends_json, _ = client.fetcher.get(
 			url=client.url_generator.get_url('friends', f'v1/users/{self.id}/friends')
 		)
 		
-		return [Friend(client, friend_data) for friend_data in friends_data['data']]
+		friends_data = None
+		
+		try:
+			friends_data = friends_json['data']
+		except:
+			print('unable to get friends')
+			
+			return []
+		
+		return [Friend(client, data) for data in friends_data]
 	
 	def get_mutuals_with(self, other: BaseUser):
 		mutuals = []
@@ -111,9 +123,6 @@ class BaseUser(BaseData):
 			page_size=page_size,
 			sort_order=sort_order
 		)
-	
-	def get_currency(self):
-		return self.client.economy.get_user_currency(self.id)
 	
 	def get_thumbnail(self, type: UserThumbnailType = UserThumbnailType.Bust, size: UserThumbnailSize = UserThumbnailSize.Medium, is_circular: bool = False):
 		return self.client.thumbnails.get_user_thumbnails([self.id], type=type, size=size, is_circular=is_circular)[0]

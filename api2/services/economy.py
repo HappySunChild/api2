@@ -27,4 +27,7 @@ class EconomyProvider:
 			url=client.url_generator.get_url('economy', f'v1/users/{user_id}/currency')
 		)
 		
-		return currency_data['robux']
+		try:
+			return currency_data['robux']
+		except:
+			return -1
