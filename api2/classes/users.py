@@ -130,7 +130,7 @@ class BaseUser(BaseData):
 	
 	@property
 	def link(self):
-		return f'https://www.roblox.com/{self.id}/profile'
+		return f'https://www.roblox.com/users/{self.id}/profile'
 	
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.id}>'
