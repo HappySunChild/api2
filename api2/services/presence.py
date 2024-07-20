@@ -37,6 +37,8 @@ class Presence:
 		self.last_location = data['lastLocation']
 		
 		self.job_id = data['gameId']
+		self.root_place_id = data['rootPlaceId']
+		self.universe_id = data['universeId']
 		
 		user = None
 		root_place = None
@@ -44,12 +46,20 @@ class Presence:
 		
 		if client.config.allow_partials:
 			user = BaseUser(client, data['userId'])
-			universe = BaseUniverse(client, data['universeId'])
-			root_place = BasePlace(client, data['rootPlaceId'])
+			
+			if self.universe_id:
+				universe = BaseUniverse(client, self.universe_id)
+			
+			if self.root_place_id:
+				root_place = BasePlace(client, data['rootPlaceId'])
 		else:
 			user = client.get_User(data['userId'])
-			universe = client.get_Universe(data['universeId'])
-			root_place = client.get_Place(data['rootPlaceId'])
+			
+			if self.universe_id:
+				universe = client.get_Universe(data['universeId'])
+			
+			if self.root_place_id:
+				root_place = client.get_Place(data['rootPlaceId'])
 		
 		self.root_place = root_place
 		self.universe = universe
