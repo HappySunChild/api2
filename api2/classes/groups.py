@@ -10,7 +10,7 @@ from .users import User
 if TYPE_CHECKING:
 	from ..client import Client
 
-class GroupShout(BaseData):
+class GroupShout:
 	def __init__(self, client: Client, data: dict) -> None:
 		self.body = data.get('body')
 		
@@ -19,7 +19,7 @@ class GroupShout(BaseData):
 		self.created = parse(data.get('created')).timestamp()
 		self.updated = parse(data.get('updated')).timestamp()
 
-class GroupRole(BaseData):
+class GroupRole:
 	def __init__(self, data: dict) -> None:
 		self.id = data.get('id')
 		self.name = data.get('name')
@@ -33,10 +33,6 @@ class GroupMember(User):
 		self.role = GroupRole(data['role'])
 
 class BaseGroup(BaseData):
-	def __init__(self, client: Client, group_id: int) -> None:
-		self.client = client
-		self.id = group_id
-	
 	def get_members(self, page_size: int = 10):
 		return PageIterator(
 			fetcher=self.client.fetcher,

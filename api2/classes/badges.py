@@ -16,10 +16,6 @@ class BadgeStatistics:
 		self.win_rate_percentage = statistic_data.get('winRatePercentage')
 
 class BaseBadge(BaseData):
-	def __init__(self, client: Client, badge_id: int) -> None:
-		self.client = client
-		self.id = badge_id
-	
 	def get_icon(self, is_circular: bool = False):
 		return self.client.thumbnails.get_badge_icons([self.id], is_circular=is_circular)[0]
 	

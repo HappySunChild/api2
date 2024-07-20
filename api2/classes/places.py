@@ -24,10 +24,6 @@ class GameInstance(BaseData):
 		return f'<{self.__class__.__name__} id={self.job_id!r}>'
 
 class BasePlace(BaseData):
-	def __init__(self, client: Client, place_id: int):
-		self.client = client
-		self.id = place_id
-	
 	def get_instances(self, page_size: int = 10):
 		return PageIterator(
 			fetcher=self.client.fetcher,

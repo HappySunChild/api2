@@ -44,10 +44,6 @@ class FriendRequest(BaseData):
 		return f'<{self.__class__.__name__}: {self.origin_user.fullname}>'
 
 class BaseUser(BaseData):
-	def __init__(self, client: Client, user_id: int):
-		self.client = client
-		self.id = user_id
-	
 	def get_presence(self):
 		presences = self.client.presence.get_user_presences([self.id])
 		

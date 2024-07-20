@@ -12,10 +12,6 @@ if TYPE_CHECKING:
 	from ..client import Client
 
 class BaseUniverse(BaseData):
-	def __init__(self, client: Client, universe_id: int):
-		self.client = client
-		self.id = universe_id
-	
 	def get_thumbnail_container(self, size: UniverseThumbnailSize = UniverseThumbnailSize.Medium, count: int = 1, is_circular: bool = False):
 		return self.client.thumbnails.get_universe_thumbnails([self.id], size=size, count_per_universe=count, is_circular=is_circular)[0]
 	
