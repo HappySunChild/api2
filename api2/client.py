@@ -83,7 +83,7 @@ class Client:
 		sub_cache[index] = new_value
 	
 	
-	def _get_universe_id(self, place_id: int):
+	def _get_universe_id(self, place_id: int) -> int:
 		cached_id = self.get_cache('universe_ids', place_id)
 		
 		if cached_id:
@@ -103,7 +103,7 @@ class Client:
 		self.fetcher.set_cookie('.ROBLOSECURITY', token)
 	
 	
-	def get_User(self, user: UserOrId):
+	def get_User(self, user: UserOrId) -> User:
 		if not user:
 			return
 		
@@ -124,10 +124,10 @@ class Client:
 		
 		return user
 	
-	def get_base_User(self, user_id: int):
+	def get_base_User(self, user_id: int) -> BaseUser:
 		return BaseUser(self, user_id)
 	
-	def get_authenticated_User(self, full: bool = True):
+	def get_authenticated_User(self, full: bool = True) -> AuthenticatedUser:
 		user_data, _ = self.fetcher.get(
 			url=self.url_generator.get_url('users', f'v1/users/authenticated')
 		)
@@ -141,18 +141,18 @@ class Client:
 		return BaseUser(self, user_data['id'])
 	
 	
-	def get_Group(self, group_id: int):
+	def get_Group(self, group_id: int) -> Group:
 		group_data, _ = self.fetcher.get(
 			url=self.url_generator.get_url('groups', f'v1/groups/{group_id}')
 		)
 		
 		return Group(self, group_data)
 	
-	def get_base_Group(self, group_id: int):
+	def get_base_Group(self, group_id: int) -> BaseGroup:
 		return BaseGroup(self, group_id)
 	
 	
-	def get_Universe(self, universe: UniverseOrId=None, place: PlaceOrId=None):
+	def get_Universe(self, universe: UniverseOrId=None, place: PlaceOrId=None) -> Universe:
 		universe_id = None
 		
 		if universe:
@@ -172,10 +172,10 @@ class Client:
 		
 		return new_universe
 	
-	def get_base_Universe(self, universe_id: int):
+	def get_base_Universe(self, universe_id: int) -> BaseUniverse:
 		return BaseUniverse(universe_id)
 	
-	def multiget_Universes(self, universe_ids: list[int]):
+	def multiget_Universes(self, universe_ids: list[int]) -> list[Universe]:
 		universes_data, _ = self.fetcher.get(
 			url=self.url_generator.get_url('games', 'v1/games'),
 			params = {'universeIds': universe_ids}
@@ -183,13 +183,13 @@ class Client:
 		
 		return [Universe(self, data=universe_data) for universe_data in universes_data['data']]
 	
-	def multiget_Universes_place_ids(self, place_ids: list[int]):
+	def multiget_Universes_place_ids(self, place_ids: list[int]) -> list[Universe]:
 		places = self.multiget_Places(place_ids)
 		
 		return self.multiget_Universes([place.universe_id for place in places])
 	
 	
-	def get_Place(self, place: PlaceOrId):
+	def get_Place(self, place: PlaceOrId) -> Place:
 		if not place:
 			return
 		
@@ -206,10 +206,10 @@ class Client:
 		
 		return new_place
 	
-	def get_base_Place(self, place_id: int):
+	def get_base_Place(self, place_id: int) -> BasePlace:
 		return BasePlace(self, place_id)
 	
-	def multiget_Places(self, place_ids: list[int]):
+	def multiget_Places(self, place_ids: list[int]) -> list[Place]:
 		places_data, _ = self.fetcher.get(
 			url=self.url_generator.get_url('games', 'v1/games/multiget-place-details'),
 			params={'placeIds': place_ids}
