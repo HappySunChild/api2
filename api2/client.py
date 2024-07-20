@@ -104,8 +104,8 @@ class Client:
 	
 	
 	def get_User(self, user: UserOrId):
-		if isinstance(user, User):
-			return user
+		if not user:
+			return
 		
 		user_id = int(user)
 		
@@ -153,7 +153,10 @@ class Client:
 	
 	
 	def get_Universe(self, universe: UniverseOrId=None, place: PlaceOrId=None):
-		universe_id = int(universe)
+		universe_id = None
+		
+		if universe:
+			universe_id = int(universe)
 		
 		if place and not universe_id:
 			universe_id = self._get_universe_id(int(place))
@@ -163,11 +166,11 @@ class Client:
 		if cached_universe:
 			return cached_universe
 		
-		universe = self.multiget_Universes([universe_id])[0]
+		new_universe = self.multiget_Universes([universe_id])[0]
 		
-		self.set_cache('universes', universe_id, universe)
+		self.set_cache('universes', universe_id, new_universe)
 		
-		return universe
+		return new_universe
 	
 	def get_base_Universe(self, universe_id: int):
 		return BaseUniverse(universe_id)
@@ -187,8 +190,8 @@ class Client:
 	
 	
 	def get_Place(self, place: PlaceOrId):
-		if isinstance(place, Place):
-			return place
+		if not place:
+			return
 		
 		place_id = int(place)
 		
@@ -197,11 +200,11 @@ class Client:
 		if cached_place:
 			return cached_place
 		
-		place = self.multiget_Places([place_id])[0]
+		new_place = self.multiget_Places([place_id])[0]
 		
-		self.set_cache('places', place_id, place)
+		self.set_cache('places', place_id, new_place)
 		
-		return place
+		return new_place
 	
 	def get_base_Place(self, place_id: int):
 		return BasePlace(self, place_id)

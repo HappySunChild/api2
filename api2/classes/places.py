@@ -42,6 +42,9 @@ class BasePlace(BaseData):
 	@property
 	def link(self):
 		return f'https://www.roblox.com/games/{self.id}/game'
+	
+	def __repr__(self) -> str:
+		return f'<{self.__class__.__name__}: {self.id}>'
 
 class Place(BasePlace):
 	def __init__(self, client: Client, data: dict):

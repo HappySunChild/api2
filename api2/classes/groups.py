@@ -44,6 +44,9 @@ class BaseGroup(BaseData):
 			page_size=page_size,
 			handler=lambda data: GroupMember(self.client, data, self)
 		)
+	
+	def __repr__(self) -> str:
+		return f'<{self.__class__.__name__}: {self.id}>'
 
 class Group(BaseGroup):
 	def __init__(self, client: Client, data: dict) -> None:

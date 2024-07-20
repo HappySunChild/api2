@@ -18,5 +18,5 @@ from .client import Client, ClientConfig
 
 UserOrId = Union[BaseUser, int]
 PlaceOrId = Union[BasePlace, int]
-UniverseOrId = Union[Universe, int]
-BadgeOrId = Union[Badge, int]
+UniverseOrId = Union[BaseUniverse, int]
+BadgeOrId = Union[BaseBadge, int]

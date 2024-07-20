@@ -26,6 +26,9 @@ class BaseBadge(BaseData):
 	@property
 	def link(self):
 		return f'https://www.roblox.com/badges/{self.id}/badge'
+	
+	def __repr__(self) -> str:
+		return f'<{self.__class__.__name__}: {self.id}>'
 
 class Badge(BaseBadge):
 	def __init__(self, client: Client, data: dict) -> None:
