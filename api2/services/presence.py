@@ -75,11 +75,17 @@ class Presence:
 	
 	@property
 	def game_link(self):
+		if not self.root_place:
+			return 'no game link'
+		
 		return self.root_place.link
 	
 	@property
 	def join_link(self):
-		return f'roblox://experiences/start?placeId={self.root_place.id}&gameInstanceId={self.job_id}'
+		if not self.root_place or not self.job_id:
+			return 'no join link'
+		
+		return f'roblox://experiences/start?placeId={self.root_place_id}&gameInstanceId={self.job_id}'
 	
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.last_location!r}>'
