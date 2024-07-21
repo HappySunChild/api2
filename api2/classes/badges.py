@@ -30,6 +30,8 @@ class Badge(BaseBadge):
 	def __init__(self, client: Client, data: dict) -> None:
 		super().__init__(client, data['id'])
 		
+		self.raw = data
+		
 		self.name = data.get('name')
 		self.description = data.get('description')
 		self.enabled = data.get('enabled')

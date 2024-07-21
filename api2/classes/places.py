@@ -46,6 +46,8 @@ class Place(BasePlace):
 	def __init__(self, client: Client, data: dict):
 		super().__init__(client, data['placeId'])
 		
+		self.raw = data
+		
 		self.name = data.get('name')
 		self.description = data.get('description')
 		

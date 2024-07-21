@@ -56,6 +56,8 @@ class Universe(PartialUniverse):
 	def __init__(self, client: Client, data: dict):
 		super().__init__(client, data)
 		
+		self.raw = data
+		
 		self.description = data.get('description')
 		
 		self.playing = data.get('playing')
