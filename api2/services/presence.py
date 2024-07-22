@@ -98,7 +98,7 @@ class PresenceProvider(BaseProvider):
 		
 		presence_data, _ = client.fetcher.post(
 			url=client.url_generator.get_url('presence', 'v1/presence/users'),
-			json={
+			payload={
 				"userIds": list(map(int, users))
 			}
 		)

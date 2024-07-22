@@ -172,5 +172,5 @@ class Fetcher:
 	def get(self, url: str, params: dict = None, *args, **kwargs) -> tuple[dict, Response]:
 		return self.request(method="GET", url=url, params=params, *args, **kwargs)
 	
-	def post(self, url: str, json: dict = None, *args, **kwargs) -> tuple[dict, Response]:
-		return self.request(method="POST", url=url, json=json, *args, **kwargs)
+	def post(self, url: str, payload: dict = None, *args, **kwargs) -> tuple[dict, Response]:
+		return self.request(method="POST", url=url, json=payload, *args, **kwargs)
