@@ -9,6 +9,7 @@ from .services.economy import EconomyProvider
 from .services.inventory import InventoryProvider
 from .services.thumbnail import ThumbnailProvider
 from .services.avatar import AvatarProvider
+from .services.users import UserProvider
 
 from .classes.groups import Group, BaseGroup
 from .classes.users import User, BaseUser, AuthenticatedUser
@@ -54,6 +55,7 @@ class Client:
 		self.inventory = InventoryProvider(self)
 		self.thumbnails = ThumbnailProvider(self)
 		self.avatar = AvatarProvider(self)
+		self.users = UserProvider(self)
 		
 		if token:
 			self.set_token(token)
@@ -106,9 +108,6 @@ class Client:
 	
 	
 	def get_User(self, user: UserOrId) -> User:
-		if not user:
-			return
-		
 		user_id = int(user)
 		
 		cached_user = self.get_cache('users', user_id)
@@ -116,31 +115,23 @@ class Client:
 		if cached_user:
 			return cached_user
 		
-		user_data, _ = self.fetcher.get(
-			url=self.url_generator.get_url('users', f'v1/users/{user_id}')
-		)
+		new_user = self.users.get_user(user_id=user_id)
 		
-		user = User(self, user_data)
+		self.set_cache('users', user_id, new_user)
 		
-		self.set_cache('users', user_id, user)
-		
-		return user
+		return new_user
 	
-	def get_base_User(self, user_id: int) -> BaseUser:
-		return BaseUser(self, user_id)
+	def get_BaseUser(self, user_id: int) -> BaseUser:
+		return self.users.get_base_user(user_id=user_id)
 	
-	def get_authenticated_User(self, full: bool = True) -> AuthenticatedUser:
-		user_data, _ = self.fetcher.get(
-			url=self.url_generator.get_url('users', f'v1/users/authenticated')
-		)
-		
-		if full:
-			authenticated_user = AuthenticatedUser(self, {'id': user_data['id']})
-			authenticated_user.update_info()
-			
-			return authenticated_user
-		
-		return BaseUser(self, user_data['id'])
+	def get_AuthenticatedUser(self, full: bool = True) -> AuthenticatedUser:
+		return self.users.get_authenticated_user()
+	
+	def multiget_Users_usernames(self, usernames: list[str], exclude_banned: bool = True):
+		return self.users.multiget_users_usernames(usernames=usernames, exclude_banned=exclude_banned)
+	
+	def multiget_Users_ids(self, user_ids: list[int], exclude_banned: bool = True):
+		return self.users.multiget_users_ids(user_ids=user_ids, exclude_banned=exclude_banned)
 	
 	
 	def get_Group(self, group_id: int) -> Group:
@@ -150,7 +141,7 @@ class Client:
 		
 		return Group(self, group_data)
 	
-	def get_base_Group(self, group_id: int) -> BaseGroup:
+	def get_BaseGroup(self, group_id: int) -> BaseGroup:
 		return BaseGroup(self, group_id)
 	
 	
@@ -174,7 +165,7 @@ class Client:
 		
 		return new_universe
 	
-	def get_base_Universe(self, universe_id: int) -> BaseUniverse:
+	def get_BaseUniverse(self, universe_id: int) -> BaseUniverse:
 		return BaseUniverse(universe_id)
 	
 	def multiget_Universes(self, universe_ids: list[int]) -> list[Universe]:
@@ -208,7 +199,7 @@ class Client:
 		
 		return new_place
 	
-	def get_base_Place(self, place_id: int) -> BasePlace:
+	def get_BasePlace(self, place_id: int) -> BasePlace:
 		return BasePlace(self, place_id)
 	
 	def multiget_Places(self, place_ids: list[int]) -> list[Place]:

@@ -13,6 +13,7 @@ from ..utility.fetcher import PageIterator, SortOrder
 
 if TYPE_CHECKING:
 	from ..client import Client
+	from ..types import UserOrId
 
 class FriendRequest(BaseData):
 	def __init__(self, client: Client, data: dict) -> None:
@@ -52,6 +53,7 @@ class BaseUser(BaseData):
 		except IndexError:
 			return None
 	
+	
 	def get_friends(self) -> list[Friend]:
 		client = self.client
 		
@@ -68,7 +70,10 @@ class BaseUser(BaseData):
 		
 		return [Friend(client, data) for data in friends_data]
 	
-	def get_mutuals_with(self, other: BaseUser):
+	def get_mutuals_with(self, other: UserOrId):
+		if isinstance(other, int):
+			other = BaseUser(self.client, other)
+		
 		mutuals = []
 		
 		friends = self.get_friends()
@@ -81,8 +86,10 @@ class BaseUser(BaseData):
 		
 		return mutuals
 	
+	
 	def get_currency(self):
 		return self.client.economy.get_user_currency(self.id)
+	
 	
 	def get_badges(self, page_size: int = 10, sort_order: SortOrder = SortOrder.Descending):
 		client = self.client
@@ -118,8 +125,10 @@ class BaseUser(BaseData):
 			sort_order=sort_order
 		)
 	
+	
 	def get_thumbnail(self, type: UserThumbnailType = UserThumbnailType.Bust, size: UserThumbnailSize = UserThumbnailSize.Medium, is_circular: bool = False):
 		return self.client.thumbnails.get_user_thumbnails([self.id], type=type, size=size, is_circular=is_circular)[0]
+	
 	
 	def get_outfits(self, outfit_type: OutfitType = OutfitType.Avatar, page_size: int = 25, is_editable: bool = True):
 		return self.client.avatar.get_user_outfits(self.id, outfit_type=outfit_type, page_size=page_size, is_editable=is_editable)
