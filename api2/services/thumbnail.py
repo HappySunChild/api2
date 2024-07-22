@@ -3,10 +3,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from ..enums import UniverseThumbnailSize, ThumbnailFormat, ThumbnailState, UserThumbnailSize, UserThumbnailType, PlaceThumbnailPolicy, PlaceThumbnailSize
+from ..enums import UniverseThumbnailSize, ThumbnailFormat, ThumbnailState, UserThumbnailSize, UserThumbnailType, PlaceThumbnailPolicy, PlaceThumbnailSize, OutfitThumbnailSize
 
 if TYPE_CHECKING:
-	from ..types import UserOrId, PlaceOrId, UniverseOrId, BadgeOrId
+	from ..types import UserOrId, PlaceOrId, UniverseOrId, BadgeOrId, OutfitOrId
 	from ..client import Client
 
 class Thumbnail:
@@ -18,7 +18,7 @@ class Thumbnail:
 		self.state = ThumbnailState(thumbnail_data['state'])
 	
 	def __repr__(self) -> str:
-		return f'<{self.__class__.__name__}: {self.image_url!r}>'
+		return f'<{self.__class__.__name__}: {self.state.name} {self.image_url!r}>'
 
 class UniverseThumbnails:
 	def __init__(self, universe_thumbnail_data: dict) -> None:
@@ -31,6 +31,30 @@ class UniverseThumbnails:
 class ThumbnailProvider:
 	def __init__(self, client: Client) -> None:
 		self.client = client
+	
+	def get_outfit_thumbnails(
+			self,
+			outfits: list[OutfitOrId],
+			size: OutfitThumbnailSize = OutfitThumbnailSize.Normal,
+			is_circular: bool = False,
+			format: ThumbnailFormat = ThumbnailFormat.Png
+		):
+		client = self.client
+		
+		thumbnail_data, _ = client.fetcher.get(
+			url=client.url_generator.get_url('thumbnails', 'v1/users/outfits'),
+			params={
+				'userOutfitIds': list(map(int, outfits)),
+				'isCircular': is_circular,
+				'size': size.value,
+				'format': format.value
+			}
+		)
+		
+		return [
+			Thumbnail(data)
+			for data in thumbnail_data['data']
+		]
 	
 	def get_badge_icons(
 			self,

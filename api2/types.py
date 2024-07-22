@@ -13,6 +13,7 @@ from .services.economy import EconomyProvider
 from .services.inventory import InventoryProvider, Asset
 from .services.presence import PresenceProvider, Presence
 from .services.thumbnail import ThumbnailProvider, Thumbnail, UniverseThumbnails
+from .services.avatar import Outfit
 
 from .client import Client, ClientConfig
 
@@ -20,3 +21,4 @@ UserOrId = Union[BaseUser, int]
 PlaceOrId = Union[BasePlace, int]
 UniverseOrId = Union[BaseUniverse, int]
 BadgeOrId = Union[BaseBadge, int]
+OutfitOrId = Union[Outfit, int]

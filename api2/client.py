@@ -8,6 +8,7 @@ from .services.presence import PresenceProvider
 from .services.economy import EconomyProvider
 from .services.inventory import InventoryProvider
 from .services.thumbnail import ThumbnailProvider
+from .services.avatar import AvatarProvider
 
 from .classes.groups import Group, BaseGroup
 from .classes.users import User, BaseUser, AuthenticatedUser
@@ -52,6 +53,7 @@ class Client:
 		self.presence = PresenceProvider(self)
 		self.inventory = InventoryProvider(self)
 		self.thumbnails = ThumbnailProvider(self)
+		self.avatar = AvatarProvider(self)
 		
 		if token:
 			self.set_token(token)

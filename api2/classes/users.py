@@ -8,7 +8,7 @@ from dateutil.parser import parse
 
 from .base import BaseData
 from .badges import Badge
-from ..enums import AssetType, UserThumbnailSize, UserThumbnailType
+from ..enums import AssetType, UserThumbnailSize, UserThumbnailType, OutfitType
 from ..utility.fetcher import PageIterator, SortOrder
 
 if TYPE_CHECKING:
@@ -64,9 +64,7 @@ class BaseUser(BaseData):
 		try:
 			friends_data = friends_json['data']
 		except:
-			print('unable to get friends')
-			
-			return []
+			friends_data = []
 		
 		return [Friend(client, data) for data in friends_data]
 	
@@ -122,6 +120,15 @@ class BaseUser(BaseData):
 	
 	def get_thumbnail(self, type: UserThumbnailType = UserThumbnailType.Bust, size: UserThumbnailSize = UserThumbnailSize.Medium, is_circular: bool = False):
 		return self.client.thumbnails.get_user_thumbnails([self.id], type=type, size=size, is_circular=is_circular)[0]
+	
+	def get_outfits(self, outfit_type: OutfitType = OutfitType.Avatar, page_size: int = 25, is_editable: bool = True):
+		return self.client.avatar.get_user_outfits(self.id, outfit_type=outfit_type, page_size=page_size, is_editable=is_editable)
+	
+	def get_avatar_details(self):
+		return self.client.avatar.get_user_avatar_details(self.id)
+	
+	def get_avatar_asset_ids(self) -> list[int]:
+		return self.client.avatar.get_user_currently_wearing(self.id)
 	
 	@property
 	def can_view_inventory(self):
