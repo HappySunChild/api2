@@ -2,9 +2,9 @@ import setuptools
 
 setup_info = {
 	'name': 'api2',
-	'version': '1.3.6',
+	'version': '1.3.7',
 	'author': 'HappySunChild',
-	'description': 'A python library meant to make interfacing with the Roblox API simpler. Designed with work with python 3.9+',
+	'description': 'A python library meant to make interfacing with the Roblox API simpler. Designed to work with python 3.9+',
 	'url': 'https://github.com/HappySunChild/api2',
 	'packages': setuptools.find_packages(),
 	'python_requires': '>=3.9',
