@@ -147,23 +147,27 @@ class BaseUser(BaseData):
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.id}>'
 
-class PartialUser(BaseUser):
-	def __init__(self, client: Client, partial_data: dict):
-		super().__init__(client, partial_data.get('userId'))
-		
-		self.name = partial_data.get('username', partial_data.get('name'))
-		self.display_name = partial_data.get('displayName')
 
-class User(BaseUser):
+class PartialUser(BaseUser):
 	def __init__(self, client: Client, data: dict):
-		_id = data.get('id', data.get('userId'))
-		
-		super().__init__(client, _id)
+		super().__init__(client, data.get('userId', data.get('id')))
 		
 		self.raw = data
 		
-		self.name = data.get('name', data.get('username'))
+		self.name = data.get('username', data.get('name'))
 		self.display_name = data.get('displayName')
+	
+	@property
+	def fullname(self):
+		return f'{self.display_name} @{self.name}'
+	
+	def __repr__(self) -> str:
+		return f'<{self.__class__.__name__}: {self.fullname}>'
+
+class User(PartialUser):
+	def __init__(self, client: Client, data: dict):
+		super().__init__(client, data)
+		
 		self.description = data.get('description')
 		
 		self.is_banned = data.get('isBanned')
@@ -180,13 +184,7 @@ class User(BaseUser):
 		)
 		
 		self.__init__(client, user_data)
-	
-	@property
-	def fullname(self):
-		return f'{self.display_name} @{self.name}'
-	
-	def __repr__(self) -> str:
-		return f'<{self.__class__.__name__}: {self.fullname}>'
+
 
 class AuthenticatedUser(User):
 	def __init__(self, client: Client, data: dict):
