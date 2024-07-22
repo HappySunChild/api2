@@ -3,7 +3,7 @@
 from __future__ import annotations
 from typing import Callable, Optional
 
-from baseprovider import BaseProvider
+from .baseprovider import BaseProvider
 from ..enums import AssetType
 from ..classes.assets import Asset
 from ..utility.fetcher import PageIterator, SortOrder

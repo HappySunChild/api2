@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from dateutil.parser import parse
 
-from baseprovider import BaseProvider
+from .baseprovider import BaseProvider
 from ..classes.users import BaseUser
 from ..classes.universes import BaseUniverse
 from ..classes.places import BasePlace

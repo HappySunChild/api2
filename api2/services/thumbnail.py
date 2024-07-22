@@ -3,7 +3,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from baseprovider import BaseProvider
+from .baseprovider import BaseProvider
 from ..enums import UniverseThumbnailSize, ThumbnailFormat, ThumbnailState, UserThumbnailSize, UserThumbnailType, PlaceThumbnailPolicy, PlaceThumbnailSize, OutfitThumbnailSize
 
 if TYPE_CHECKING:

@@ -3,7 +3,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from baseprovider import BaseProvider
+from .baseprovider import BaseProvider
 from ..enums import AvatarType, OutfitType
 from ..utility.fetcher import PageIterator
 from ..classes.badges import BaseData

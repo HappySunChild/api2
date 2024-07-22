@@ -1,7 +1,7 @@
 # https://economy.roblox.com/docs/index.html
 # https://premiumfeatures.roblox.com/docs/index.html
 
-from baseprovider import BaseProvider
+from .baseprovider import BaseProvider
 
 class EconomyProvider(BaseProvider):
 	def get_user_has_premium(self, user_id: int):
