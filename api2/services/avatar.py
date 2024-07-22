@@ -3,6 +3,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
+from baseprovider import BaseProvider
 from ..enums import AvatarType, OutfitType
 from ..utility.fetcher import PageIterator
 from ..classes.badges import BaseData
@@ -56,10 +57,7 @@ class Outfit(BaseData):
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.name} {self.id}>'
 
-class AvatarProvider:
-	def __init__(self, client: Client) -> None:
-		self.client = client
-	
+class AvatarProvider(BaseProvider):
 	def get_user_outfits(self, user: UserOrId, outfit_type: OutfitType = OutfitType.Avatar, page_size: int = 25, is_editable: bool = True):
 		client = self.client
 		

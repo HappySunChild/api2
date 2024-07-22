@@ -3,11 +3,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
+from baseprovider import BaseProvider
 from ..enums import UniverseThumbnailSize, ThumbnailFormat, ThumbnailState, UserThumbnailSize, UserThumbnailType, PlaceThumbnailPolicy, PlaceThumbnailSize, OutfitThumbnailSize
 
 if TYPE_CHECKING:
 	from ..types import UserOrId, PlaceOrId, UniverseOrId, BadgeOrId, OutfitOrId
-	from ..client import Client
 
 class Thumbnail:
 	def __init__(self, thumbnail_data: dict) -> None:
@@ -28,10 +28,7 @@ class UniverseThumbnails:
 			for thumbnail_data in universe_thumbnail_data['thumbnails']
 		]
 
-class ThumbnailProvider:
-	def __init__(self, client: Client) -> None:
-		self.client = client
-	
+class ThumbnailProvider(BaseProvider):
 	def get_outfit_thumbnails(
 			self,
 			outfits: list[OutfitOrId],

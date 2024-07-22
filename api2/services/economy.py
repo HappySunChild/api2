@@ -1,16 +1,9 @@
 # https://economy.roblox.com/docs/index.html
 # https://premiumfeatures.roblox.com/docs/index.html
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
+from baseprovider import BaseProvider
 
-if TYPE_CHECKING:
-	from ..client import Client
-
-class EconomyProvider:
-	def __init__(self, client: Client) -> None:
-		self.client = client
-	
+class EconomyProvider(BaseProvider):
 	def get_user_has_premium(self, user_id: int):
 		client = self.client
 		

@@ -4,6 +4,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from dateutil.parser import parse
+
+from baseprovider import BaseProvider
 from ..classes.users import BaseUser
 from ..classes.universes import BaseUniverse
 from ..classes.places import BasePlace
@@ -90,10 +92,7 @@ class Presence:
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.last_location!r}>'
 
-class PresenceProvider:
-	def __init__(self, client: Client) -> None:
-		self.client = client
-	
+class PresenceProvider(BaseProvider):
 	def get_user_presences(self, users: list[UserOrId]) -> list[Presence]:
 		client = self.client
 		
