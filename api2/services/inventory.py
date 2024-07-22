@@ -3,31 +3,12 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Callable, Optional
 
-from dateutil.parser import parse
 from ..enums import AssetType
-from ..classes.base import BaseData
+from ..classes.assets import Asset
 from ..utility.fetcher import PageIterator, SortOrder
 
 if TYPE_CHECKING:
 	from ..client import Client
-
-class Asset(BaseData):
-	def __init__(self, client: Client, asset_data: dict) -> None:
-		self.id = asset_data.get('assetId')
-		
-		self.created = parse(asset_data['created']).timestamp()
-		self.updated = parse(asset_data['updated']).timestamp()
-		
-		owner = None
-		
-		if client.config.allow_partials:
-			from ..classes.users import PartialUser
-			
-			owner = PartialUser(client, asset_data['owner'])
-		else:
-			owner = client.get_User(asset_data['owner']['userId'])
-		
-		self.owner = owner
 
 class InventoryProvider:
 	def __init__(self, client: Client) -> None:

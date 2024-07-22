@@ -5,12 +5,13 @@ from .classes.places import Place, BasePlace
 from .classes.groups import Group, BaseGroup, GroupMember
 from .classes.universes import Universe, BaseUniverse, PartialUniverse
 from .classes.users import User, BaseUser, PartialUser, AuthenticatedUser, Friend
+from .classes.assets import Asset, BaseAsset
 
 from .utility.fetcher import Fetcher, Page, Pages, PageIterator
 from .utility.url import URLGenerator
 
 from .services.economy import EconomyProvider
-from .services.inventory import InventoryProvider, Asset
+from .services.inventory import InventoryProvider
 from .services.presence import PresenceProvider, Presence
 from .services.thumbnail import ThumbnailProvider, Thumbnail, UniverseThumbnails
 from .services.avatar import Outfit
