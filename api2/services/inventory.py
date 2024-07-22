@@ -1,19 +1,14 @@
 # https://inventory.roblox.com/docs/index.html
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import Callable, Optional
 
+from baseprovider import BaseProvider
 from ..enums import AssetType
 from ..classes.assets import Asset
 from ..utility.fetcher import PageIterator, SortOrder
 
-if TYPE_CHECKING:
-	from ..client import Client
-
-class InventoryProvider:
-	def __init__(self, client: Client) -> None:
-		self.client = client
-	
+class InventoryProvider(BaseProvider):
 	def can_view_inventory(self, user_id: int):
 		client = self.client
 		
