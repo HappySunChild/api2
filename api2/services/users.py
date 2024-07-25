@@ -43,7 +43,7 @@ class UserProvider(BaseProvider):
 	def get_user(self, user_id: int) -> User:
 		client = self.client
 		
-		user_data = client.fetcher.get(
+		user_data, _ = client.fetcher.get(
 			url=client.url_generator.get_url('users', f'v1/users/{user_id}')
 		)
 		
