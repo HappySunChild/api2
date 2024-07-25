@@ -94,7 +94,7 @@ class PageIterator:
 			}
 		)
 		
-		self.next_cursor = page_data.get('nextPageCursor')
+		self.next_cursor = page_data.get('nextPageCursor', page_data.get('paginationToken'))
 		self.prev_cursor = page_data.get('previousPageCursor')
 		
 		data = page_data.get('data')
