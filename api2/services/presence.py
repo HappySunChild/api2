@@ -41,6 +41,7 @@ class Presence:
 		self.job_id = data['gameId']
 		self.root_place_id = data['rootPlaceId']
 		self.universe_id = data['universeId']
+		self.user_id = data['userId']
 		
 		user = None
 		root_place = None
