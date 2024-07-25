@@ -88,6 +88,7 @@ class PageIterator:
 			self.url,
 			params = {
 				"cursor": self.page_cursor,
+				"paginationToken": self.page_cursor or 1, # why is the outfits endpoint like this?? IDK!! ask roblox why their own admins have porn outfits
 				"limit": self.page_size,
 				"sortOrder": self.sort_order.value,
 				**self.extra_params
@@ -113,7 +114,7 @@ class PageIterator:
 		return new_page
 	
 	def advanceToNextPage(self):
-		if self.next_cursor is None:
+		if not self.next_cursor:
 			self.is_finished = True
 			
 			return
