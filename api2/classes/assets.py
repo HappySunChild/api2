@@ -21,13 +21,6 @@ class Asset(BaseAsset):
 		self.created = parse(data['created']).timestamp()
 		self.updated = parse(data['updated']).timestamp()
 		
-		owner = None
+		from ..classes.users import PartialUser
 		
-		if client.config.allow_partials:
-			from ..classes.users import PartialUser
-			
-			owner = PartialUser(client, data['owner'])
-		else:
-			owner = client.get_User(data['owner']['userId'])
-		
-		self.owner = owner
+		self.owner = PartialUser(client, data['owner'])

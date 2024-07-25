@@ -22,7 +22,6 @@ if TYPE_CHECKING:
 
 class ClientConfig:
 	def __init__(self,
-			allow_partials: bool = True,
 			do_caching: bool = True,
 			debug_print_requests: bool = False,
 			retry_timer: float = 60
@@ -30,7 +29,6 @@ class ClientConfig:
 		
 		self._debug_print_requests = debug_print_requests
 		self.do_caching = do_caching
-		self.allow_partials = allow_partials
 		self.retry_timer = retry_timer
 
 class Client:

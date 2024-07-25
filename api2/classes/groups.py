@@ -1,3 +1,5 @@
+# https://groups.roblox.com/docs/index.html
+
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
@@ -5,7 +7,7 @@ from dateutil.parser import parse
 from ..utility.fetcher import PageIterator
 
 from .base import BaseData
-from .users import User
+from .users import User, PartialUser
 
 if TYPE_CHECKING:
 	from ..client import Client
@@ -14,7 +16,7 @@ class GroupShout:
 	def __init__(self, client: Client, data: dict) -> None:
 		self.body = data.get('body')
 		
-		self.poster = User(client, data.get('poster'))
+		self.poster = PartialUser(client, data.get('poster'))
 		
 		self.created = parse(data.get('created')).timestamp()
 		self.updated = parse(data.get('updated')).timestamp()
@@ -57,7 +59,7 @@ class Group(BaseGroup):
 		self.public_entry_allowed = data.get('publicEntryAllowed')
 		self.is_locked = data.get('isLocked', False)
 		
-		self.owner = User(client, data.get('owner')) if data.get('owner') else None
+		self.owner = PartialUser(client, data.get('owner')) if data.get('owner') else None
 	
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.name}>'

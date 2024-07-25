@@ -86,17 +86,11 @@ class Universe(PartialUniverse):
 			if creator_type == 'User':
 				from .users import BaseUser
 				
-				if client.config.allow_partials:
-					new_creator = BaseUser(client, creator_id)
-				else:
-					new_creator = client.get_User(creator_id)
+				new_creator = BaseUser(client, creator_id)
 			elif creator_type == 'Group':
 				from .groups import BaseGroup
 				
-				if client.config.allow_partials:
-					new_creator = BaseGroup(client, creator_id)
-				else:
-					new_creator = client.get_Group(creator_id)
+				new_creator = BaseGroup(client, creator_id)
 			
 			self.creator = new_creator
 	
