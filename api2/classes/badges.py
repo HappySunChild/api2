@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 from dateutil.parser import parse
 
 from .base import BaseData
-from .universes import PartialUniverse
+from ..classes.universes import PartialUniverse
+from ..classes.places import BasePlace
 
 if TYPE_CHECKING:
 	from ..client import Client
@@ -26,32 +27,32 @@ class BaseBadge(BaseData):
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.id}>'
 
-class Badge(BaseBadge):
+class PartialBadge(BaseBadge):
 	def __init__(self, client: Client, data: dict) -> None:
 		super().__init__(client, data['id'])
 		
 		self.raw = data
 		
-		self.name = data.get('name')
-		self.description = data.get('description')
-		self.enabled = data.get('enabled')
+		self.name = data['name']
+		self.description = data['description']
+		self.enabled = data['enabled']
 		
 		self.created = parse(data['created']).timestamp()
 		self.updated = parse(data['updated']).timestamp()
 		
 		self.statistics = BadgeStatistics(data['statistics'])
-		
-		universe_data = data.get('awardingUniverse')
-		
-		if universe_data:
-			awarding_universe = None
-			
-			if client.config.allow_partials:
-				awarding_universe = PartialUniverse(client, universe_data)
-			else:
-				awarding_universe = client.get_Universe(universe_id=universe_data.get('id'))
-			
-			self.awarding_universe = awarding_universe
 	
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.name}>'
+
+class UserBadge(PartialBadge):
+	def __init__(self, client: Client, data: dict) -> None:
+		super().__init__(client, data)
+		
+		self.awarder = BasePlace(client=client, id=data['awarder']['id'])
+
+class Badge(PartialBadge):
+	def __init__(self, client: Client, data: dict) -> None:
+		super().__init__(client, data)
+		
+		self.awarding_universe = PartialUniverse(client=client, data=data['awardingUniverse'])

@@ -1,6 +1,6 @@
 from typing import Union
 
-from .classes.badges import Badge, BaseBadge
+from .classes.badges import Badge, BaseBadge, UserBadge
 from .classes.places import Place, BasePlace
 from .classes.groups import Group, BaseGroup, GroupMember
 from .classes.universes import Universe, BaseUniverse, PartialUniverse

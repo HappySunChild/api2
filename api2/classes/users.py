@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from dateutil.parser import parse
 
 from .base import BaseData
-from .badges import Badge
+from .badges import UserBadge
 from ..enums import AssetType, UserThumbnailSize, UserThumbnailType, OutfitType
 from ..utility.fetcher import PageIterator, SortOrder
 
@@ -99,7 +99,7 @@ class BaseUser(BaseData):
 			url=client.url_generator.get_url('badges', f'v1/users/{self.id}/badges'),
 			sort_order=sort_order,
 			page_size=page_size,
-			handler=lambda data: Badge(client, data)
+			handler=lambda data: UserBadge(client, data)
 		)
 	
 	def get_games(self, page_size: int = 10, sort_order: SortOrder = SortOrder.Ascending):

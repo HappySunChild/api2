@@ -34,17 +34,17 @@ class BaseUniverse(BaseData):
 		return f'<{self.__class__.__name__}: {self.id}>'
 
 class PartialUniverse(BaseUniverse):
-	def __init__(self, client: Client, partial_data: dict):
-		super().__init__(client, partial_data['id'])
+	def __init__(self, client: Client, data: dict):
+		super().__init__(client, data['id'])
 		
-		self.name = partial_data.get('name')
+		self.name = data.get('name')
 		
 		place_id = None
 		
-		if partial_data.get('rootPlace'):
-			place_id = partial_data['rootPlace']['id']
+		if data.get('rootPlace'):
+			place_id = data['rootPlace']['id']
 		else:
-			place_id = partial_data.get('rootPlaceId')
+			place_id = data.get('rootPlaceId')
 		
 		self.root_place = BasePlace(client, place_id)
 	
