@@ -91,6 +91,11 @@ class BaseUser(BaseData):
 		return self.client.economy.get_user_currency(self.id)
 	
 	
+	def get_badge_award_date(self, badge_id: int):
+		client = self.client
+		
+		return client.users.get_badge_awarded_dates(self.id, [badge_id])[0]
+	
 	def get_badges(self, page_size: int = 10, sort_order: SortOrder = SortOrder.Descending):
 		client = self.client
 		
