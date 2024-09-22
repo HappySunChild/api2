@@ -21,7 +21,7 @@ class BaseData:
 		return self.id
 	
 	def __eq__(self, other: object) -> bool:
-		if isinstance(other, self.__class__):
-			return self.id == other.id
+		if not isinstance(other, self.__class__):
+			return False
 		
-		return False
+		return self.id == other.id

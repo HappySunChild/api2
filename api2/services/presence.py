@@ -81,6 +81,12 @@ class Presence:
 	
 	def __repr__(self) -> str:
 		return f'<{self.__class__.__name__}: {self.last_location!r}>'
+	
+	def __eq__(self, value: object) -> bool:
+		if not isinstance(value, self.__class__):
+			return False
+		
+		return self.last_location == value.last_location and self.presence_type == value.presence_type
 
 class PresenceProvider(BaseProvider):
 	def get_user_presences(self, users: list[UserOrId]) -> list[Presence]:
