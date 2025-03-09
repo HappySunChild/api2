@@ -34,8 +34,9 @@ PRESENCE_COLORS = [
 class Presence:
 	def __init__(self, client: Client, data: dict) -> None:
 		self.presence_type = PresenceType(data['userPresenceType'])
-		
-		self.last_online = parse(data['lastOnline']).timestamp()
+	
+		# not exactly sure why roblox remove this but i finally fixed it
+		# self.last_online = parse(data['lastOnline']).timestamp()
 		self.last_location = data['lastLocation']
 		
 		self.job_id = data['gameId']
@@ -68,14 +69,14 @@ class Presence:
 	@property
 	def game_link(self):
 		if not self.root_place:
-			return 'no game link'
+			return
 		
 		return self.root_place.link
 	
 	@property
 	def join_link(self):
 		if not self.root_place or not self.job_id:
-			return 'no join link'
+			return
 		
 		return f'roblox://experiences/start?placeId={self.root_place_id}&gameInstanceId={self.job_id}'
 	
